@@ -72,6 +72,7 @@ class OtpView : LinearLayout {
         }
 
         orientation = HORIZONTAL
+        isFocusableInTouchMode = true
         val font = Typeface.createFromAsset(resources.assets, "fonts/$digitFont")
         val maxDigitIndex = digitCount - 1
         for (i in 0..maxDigitIndex) {
