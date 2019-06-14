@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_digit_background_corners">8dp</dimen>
+    <dimen name="default_digit_space_between">8dp</dimen>
+    <dimen name="default_digit_font_size">16dp</dimen>
+</resources>
