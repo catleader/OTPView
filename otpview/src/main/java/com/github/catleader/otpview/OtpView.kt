@@ -1,11 +1,11 @@
 package com.github.catleader.otpview
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.res.ResourcesCompat
 
 /**
  * A reusable view for handle OTP input
@@ -57,13 +57,14 @@ class OtpView : LinearLayout {
     /**
      * Digit font
      */
-    var digitFontRes = R.font.kanit_regular
+    var digitFont = "kanit-regular.ttf"
 
     private fun init(attrs: AttributeSet?) {
         attrs?.also {
             context.theme.obtainStyledAttributes(attrs, R.styleable.OtpView, 0, 0).apply {
                 try {
-                    digitCount = getInteger(R.styleable.OtpView_digit_count, resources.getInteger(R.integer.default_digit_count))
+                    digitCount =
+                        getInteger(R.styleable.OtpView_digit_count, resources.getInteger(R.integer.default_digit_count))
                     digitBackgroundRes =
                         getResourceId(R.styleable.OtpView_digit_background_res_id, R.drawable.default_digit_background)
                     digitSpaceBetween = getDimensionPixelSize(
@@ -74,7 +75,7 @@ class OtpView : LinearLayout {
                         R.styleable.OtpView_digit_font_size,
                         resources.getDimension(R.dimen.default_digit_font_size)
                     )
-                    digitFontRes = getResourceId(R.styleable.OtpView_digit_font, R.font.kanit_regular)
+                    digitFont = getString(R.styleable.OtpView_digit_font) ?: "kanit_regular.ttf"
                 } finally {
                     recycle()
                 }
@@ -82,7 +83,7 @@ class OtpView : LinearLayout {
         }
 
         orientation = HORIZONTAL
-        val font = ResourcesCompat.getFont(context, digitFontRes)
+        val font = Typeface.createFromAsset(resources.assets, "fonts/$digitFont")
         val maxDigitIndex = digitCount - 1
         for (i in 0..maxDigitIndex) {
             val edt = SquareEditText(context).apply {
