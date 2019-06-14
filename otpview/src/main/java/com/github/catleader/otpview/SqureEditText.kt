@@ -9,6 +9,8 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 
 class SquareEditText : EditText {
@@ -40,6 +42,7 @@ class SquareEditText : EditText {
         previousEdt: EditText?,
         nextEdt: EditText?
     ) {
+        setOnClickListener { selectAll() }
         addTextChangedListener(AutoRequestFocusNextEditTextListener(nextEdt))
         setOnKeyListener { _, keyCode, event ->
             if (length() == 0 && keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN) {
@@ -51,7 +54,7 @@ class SquareEditText : EditText {
         }
     }
 
-    var onReachingEnd: (() -> Unit)? = null
+    var onLastBoxWasFilled: (() -> Unit)? = null
 
     inner class AutoRequestFocusNextEditTextListener(private val nextEdt: EditText?) : TextWatcher {
 
@@ -63,8 +66,9 @@ class SquareEditText : EditText {
                     nextEdt.setSelection(nextEdt.length())
                     nextEdt.selectAll()
                 } else {
-                    (s as? EditText)?.clearFocus()
-                    onReachingEnd?.invoke()
+                    onLastBoxWasFilled?.invoke()
+                    hideKeyboard()
+                    (parent as? ViewGroup?)?.requestFocus()
                 }
             }
         }
@@ -73,6 +77,11 @@ class SquareEditText : EditText {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
+    }
+
+    private fun hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
 }

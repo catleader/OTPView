@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
 
@@ -19,18 +20,6 @@ class OtpView : LinearLayout {
 
 
     private val editTexts = mutableListOf<SquareEditText>()
-
-    /**
-     * Listener when user reach the last box.
-     */
-    var onReachingEndOfBox: (() -> Unit)? = null
-        set(value) {
-            if (editTexts.isNotEmpty()) {
-                val lastEdt = editTexts[editTexts.lastIndex]
-                lastEdt.onReachingEnd = value
-            }
-            field = value
-        }
 
     /**
      * Number of OTP boxes.
@@ -88,6 +77,7 @@ class OtpView : LinearLayout {
         for (i in 0..maxDigitIndex) {
             val edt = SquareEditText(context).apply {
                 typeface = font
+                imeOptions = EditorInfo.IME_ACTION_DONE
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, digitFontSize)
                 background = AppCompatResources.getDrawable(context, digitBackgroundRes)
                 layoutParams = LayoutParams(0, LayoutParams.MATCH_PARENT, 1.0f).apply {
@@ -119,7 +109,15 @@ class OtpView : LinearLayout {
         }
     }
 
-    fun requestOtpFocus() {
+
+    fun setOnLastBoxWasFilledListener(listener: () -> Unit) {
+        val lastBoxIndex = editTexts.lastIndex
+        if (lastBoxIndex != -1) {
+            editTexts[lastBoxIndex].onLastBoxWasFilled = listener
+        }
+    }
+
+    fun requestInput() {
         if (editTexts.isNotEmpty()) {
             editTexts[0].requestFocus()
         }
