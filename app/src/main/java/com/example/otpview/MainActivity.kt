@@ -21,6 +21,11 @@ class MainActivity : AppCompatActivity() {
             Log.d(tag, "Reaching the last box")
         }
 
+
+        btnGetValue.setOnClickListener {
+            val output = otpView.getValue()
+            tvValue.text = "value: ${output.value} isCompleted: ${output.isCompleted}"
+        }
     }
 
 

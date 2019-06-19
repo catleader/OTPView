@@ -2,7 +2,7 @@
 <resources>
     <declare-styleable name="OtpView">
         <attr name="digit_count" format="integer"/>
-        <attr name="digit_background_res_id" format="reference"/>
+        <attr name="digit_background" format="reference"/>
         <attr name="digit_space" format="dimension"/>
         <attr name="digit_font_size" format="dimension"/>
         <attr name="digit_font" format="string"/>

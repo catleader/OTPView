@@ -55,7 +55,7 @@ class OtpView : LinearLayout {
                     digitCount =
                         getInteger(R.styleable.OtpView_digit_count, resources.getInteger(R.integer.default_digit_count))
                     digitBackgroundRes =
-                        getResourceId(R.styleable.OtpView_digit_background_res_id, R.drawable.default_digit_background)
+                        getResourceId(R.styleable.OtpView_digit_background, R.drawable.default_digit_background)
                     digitSpaceBetween = getDimensionPixelSize(
                         R.styleable.OtpView_digit_space,
                         resources.getDimensionPixelSize(R.dimen.default_digit_space_between)
@@ -123,4 +123,23 @@ class OtpView : LinearLayout {
             editTexts[0].requestFocus()
         }
     }
+
+    fun getValue(): Output {
+        val output = StringBuilder()
+        var isCompleted = true
+        for (edt in editTexts) {
+            val raw = edt.text.toString()
+            val digit = if (raw.isBlank()){
+                isCompleted = false
+                "#"
+            } else raw
+            output.append(digit)
+        }
+        return Output(output.toString(), isCompleted)
+    }
+
+    data class Output(
+        val value: String,
+        val isCompleted: Boolean
+    )
 }
