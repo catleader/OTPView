@@ -26,6 +26,12 @@ class MainActivity : AppCompatActivity() {
             val output = otpView.getValue()
             tvValue.text = "value: ${output.value} isCompleted: ${output.isCompleted}"
         }
+
+        btnClear.setOnClickListener {
+            otpView.clearValue()
+            val output = otpView.getValue()
+            tvValue.text = "value: ${output.value} isCompleted: ${output.isCompleted}"
+        }
     }
 
 

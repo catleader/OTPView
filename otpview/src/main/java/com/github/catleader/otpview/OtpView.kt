@@ -124,6 +124,10 @@ class OtpView : LinearLayout {
         }
     }
 
+    fun clearValue() {
+        for(edt in editTexts) edt.text.clear()
+    }
+
     fun getValue(): Output {
         val output = StringBuilder()
         var isCompleted = true
